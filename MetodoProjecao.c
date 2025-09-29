@@ -512,19 +512,27 @@ PetscErrorCode ExecutaPassoTemporalProjecao(SOLVER_PROJECAO *Solver, MALHA *M, i
         quebrouRecentemente = (quebrouRecentemente>0) ? quebrouRecentemente-1 : 0;
 
         if( (!quebrouRecentemente) && (n%frequenciaQuebra==0) && (tempo>tempo_minimo_quebra) ) {
-            static double dxQuebra = 0.05;
-           dxQuebra = 1.25*M->minDxDy;
 
-        //    ImprimeInterfaceVTK(*M, 1000000);
+            // IRINEU, IMPORTANTE: 
+            // A variavel dxQuebra determina a menor espessura aceitavel de um filamento antes de ele ser quebrado em dois pedacos
+            // Se o codigo encontrar um filamento com espessura menor que dxQuebra, a funcao "RealizaEmbaracamentoForcado_Quebra2" quebra o filamento em dois pedacos
+            // Talvez seja bom fazer testes ajustando este parametro
+            static double dxQuebra = 0.05;
+            dxQuebra = 1.25*M->minDxDy;
+
+            
+            // IRINEU, IMPORTANTE: Dentro da funcao "RealizaEmbaracamentoForcado_Quebra2" tem um parametro tambem que vc precisa olhar (qtdPontosEmbaraca).
             PONTO *pRemover = NULL;
-        //    int quebrouSim = RealizaEmbaracamentoForcado_Quebra2(M, 1.0*dxQuebra, 5.0*dxQuebra, &pRemover, CriterioOpcional_Quebra);
             int quebrouSim = RealizaEmbaracamentoForcado_Quebra2(M, 1.0*dxQuebra, 5.0*dxQuebra, &pRemover, NULL);
 
             if( quebrouSim ) {
                 PrintDebug("# Realizou mudanca topologica\n");
                 
-                // Esse numero enorme faz com que somente 1 mudanca topologica aconteca durante toda a simulacao
+                // IRINEU, IMPORTANTE:
+                // A variabel "quebrouRecentemente" impede que duas mudancas topologicas sejam realizadas uma logo apos a outra. Isto evita muitas goticulas sendo criadas
+                // Esse numero enorme que eu coloquei faz com que somente 1 mudanca topologica aconteca durante toda a simulacao
                 // Se voce colocar o numero "1000", por exemplo, vai ter um intervalo de 1000 passos temporais entre duas mudancas topologicas consecutivas
+                // Eu tenho certeza que vc vai precisar mexer nesse parametro. Principalmente quando for necessario gerar multiplas goticulas na simulacao
                 quebrouRecentemente = 1000000000;
             }
 

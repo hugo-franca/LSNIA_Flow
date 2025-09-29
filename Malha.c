@@ -3019,7 +3019,12 @@ int RealizaEmbaracamentoForcado_Quebra2(MALHA *M, double DistanciaMax, double Di
         p1 = p1Escolhido;
         p2 = p2Escolhido;
         PONTO p1Copia = *p1, p2Copia = *p2;
-
+        
+        // IRINEU, IMPORTANTE:
+        // A variabel qtdPontosEmbaraca determina a quantidade de pontos que eu vou remover quando eu quebro a interface em dois pedacos
+        // Ou seja, se vc colocar um valor muito alto, vc vai remover um buraco bem grande entre os dois pedacos restantes
+        // Eu acho que vc precisa remover no minimo o suficiente pra deixar uma camada de celulas EMPTY entre os dois pedacos
+        // Recomendo testar variar este parametro
         int qtdPontosEmbaraca = 15;
         int i;
         PONTO *A1 = p1, *A2 = p2, *B1 = p1, *B2 = p2;

@@ -1,0 +1,28 @@
+OUTPUT vtk=[1000 1000] backup=500 print=1 pasta=NewtonianDropHittingSmallHole_Re59_We[Weber]
+AXI_CILINDRICO
+Nt 5000000
+xMin 0.0
+xMax 2.0
+yMin -6.0
+yMax 1.5
+tMax 500
+Re 59.0
+Fr 7.5761 grav=[0 -1.0]  
+tipo_modelo ve
+parametros_ve Wi=1.0 beta=1.0 alpha=0.0 epsilon=0.0 formulacao=CSF
+tolNSF 1e-6 0.0 1
+tensao_superficial ligado=sim Weber=500 tsur=1
+VEL_INICIAL [0.0 -1.0]
+MALHA_EIXO_X tipo=uniforme N=80
+MALHA_EIXO_Y tipo=uniforme N=300
+BOUNDARY id=1 direcao=horizontal posicao=0.0 inicio=0.125 fim=2.0 tipo=NOSLIP movimento=SEM_MOVIMENTO
+BOUNDARY id=2 direcao=horizontal posicao=-0.25 inicio=0.125 fim=2.0 tipo=NOSLIP movimento=SEM_MOVIMENTO
+BOUNDARY id=3 direcao=vertical posicao=0.125 inicio=-0.25 fim=0 tipo=NOSLIP movimento=SEM_MOVIMENTO
+BOUNDARY id=4 direcao=vertical posicao=2.0 inicio=-0.25 fim=0 tipo=NOSLIP movimento=SEM_MOVIMENTO
+BOUNDARY id=5 direcao=horizontal posicao=-6.0 inicio=0 fim=2 tipo=NOSLIP movimento=SEM_MOVIMENTO
+BOUNDARY id=6 direcao=horizontal posicao=1.5 inicio=0 fim=2 tipo=NOSLIP movimento=SEM_MOVIMENTO
+BOUNDARY id=7 direcao=vertical posicao=2 inicio=-6 fim=1.5 tipo=NOSLIP movimento=SEM_MOVIMENTO
+BOUNDARY id=8 direcao=vertical posicao=0 inicio=-6 fim=1.5 tipo=EIXO_AXISSIMETRIA movimento=SEM_MOVIMENTO
+REGIAO_LIVRE tipo=elipse_axi centro=[0 0.5] raio=[0.5 0.5] vel=[0.0 -1.0]
+BLOCO_PARAVIEW NumFaces=4 faces=1 4 2 3
+
